@@ -34,3 +34,20 @@ drt:
   rate-limit:
     enabled: ${RATE_LIMIT_ENABLED:true}
     algorithm: ${RATE_LIMIT_ALGORITHM:TOKEN_BUCKET} # TOKEN_BUCKET, SLIDING_WINDOW_LOG, SLIDING_WINDOW_COUNTER
+    failure-mode: ${RATE_LIMIT_FAILURE_MODE:OPEN} # OPEN or CLOSED; choose explicitly for your threat model
+    key-prefix: ${RATE_LIMIT_KEY_PREFIX:drt:rl:v1}
+    user:
+      enabled: true
+      limit: ${RATE_LIMIT_USER_LIMIT:100}
+      refill-per-second: ${RATE_LIMIT_USER_REFILL_PER_SECOND:10}
+      window: ${RATE_LIMIT_USER_WINDOW:1m}
+    ip:
+      enabled: true
+      limit: ${RATE_LIMIT_IP_LIMIT:300}
+      refill-per-second: ${RATE_LIMIT_IP_REFILL_PER_SECOND:30}
+      window: ${RATE_LIMIT_IP_WINDOW:1m}
+    api-key:
+      enabled: true
+      limit: ${RATE_LIMIT_API_KEY_LIMIT:1000}
+      refill-per-second: ${RATE_LIMIT_API_KEY_REFILL_PER_SECOND:100}
+      window: ${RATE_LIMIT_API_KEY_WINDOW:1m}
