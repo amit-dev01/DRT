@@ -214,3 +214,54 @@ function Toast({ message, onClose }) {
   return <div className="toast"><span><Check size={15} /></span>{message}<button onClick={onClose} aria-label="Dismiss"><X size={14} /></button></div>
 }
 
+export function App() {
+  const [page, setPage] = useState('Overview')
+  const [rules, setRules] = useState(initialRules)
+  const [events, setEvents] = useState(seedEvents)
+  const [range, setRange] = useState('Last 24 hours')
+  const [modalRule, setModalRule] = useState(undefined)
+  const [toast, setToast] = useState('')
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const testCount = useMemo(() => events.filter(e => e.id > 5).length, [events])
+
+  function notify(text) { setToast(text); window.clearTimeout(window.toastTimer); window.toastTimer = window.setTimeout(() => setToast(''), 3200) }
+  function runTest() {
+    const denied = testCount % 4 === 3
+    const nextId = Math.max(...events.map(e => e.id)) + 1
+    const time = new Date().toLocaleTimeString('en-US', { hour12: false }) + '.' + String(Date.now()).slice(-3)
+    const event = { id: nextId, time, method: 'GET', path: '/api/v1/demo', identity: 'demo_•••' + String(nextId).slice(-2), dimension: 'API key', status: denied ? 429 : 200, latency: denied ? '4 ms' : '22 ms' }
+    setEvents(prev => [event, ...prev].slice(0, 15))
+    notify(denied ? 'Test request rate limited · HTTP 429' : 'Test request allowed · HTTP 200')
+  }
+  function toggleRule(id) {
+    setRules(prev => prev.map(rule => rule.id === id ? { ...rule, status: rule.status === 'Active' ? 'Paused' : 'Active' } : rule))
+    const changed = rules.find(rule => rule.id === id)
+    notify(`${changed?.name || 'Policy'} ${changed?.status === 'Active' ? 'paused' : 'activated'} in preview`)
+  }
+  function saveRule(updated) {
+    setRules(prev => prev.some(rule => rule.id === updated.id) ? prev.map(rule => rule.id === updated.id ? updated : rule) : [updated, ...prev])
+    setModalRule(undefined)
+    notify('Policy saved in preview')
+  }
+  function viewPage(next) { setPage(next); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+
+  return <div className="app-shell">
+    <Sidebar page={page} setPage={viewPage} mobileOpen={mobileOpen} closeMobile={() => setMobileOpen(false)} />
+    <div className="app-main"><Topbar onMenu={() => setMobileOpen(true)} onTest={runTest} page={page} />
+      <main className="content">
+        {page === 'Overview' && <Overview rules={rules} onEdit={setModalRule} onToggle={toggleRule} range={range} setRange={setRange} onViewAll={viewPage} />}
+        {page === 'Rate limits' && <PoliciesPage rules={rules} onEdit={setModalRule} onToggle={toggleRule} />}
+        {page === 'Live traffic' && <ActivityPage events={events} onTest={runTest} />}
+        {page === 'Redis health' && <RedisPage />}
+        {page === 'Settings' && <SettingsPage />}
+        {page === 'API docs' && <><Heading title="API documentation" subtitle="Integrate your services with the DRT gateway." /><div className="panel docs-panel"><div className="docs-icon"><TerminalSquare size={20} /></div><h2>Gateway API reference</h2><p>Requests to <code>/api/**</code> are proxied to your configured upstream and evaluated against enabled rate-limit policies.</p><div className="code-sample"><span>curl -i https://gateway.example.com/api/v1/resource \</span><span>  -H <b>"X-API-Key: your-api-key"</b></span></div><button className="primary-button" onClick={() => viewPage('Overview')}>Back to overview <ArrowRight size={14} /></button></div></>}
+        <footer className="page-footer"><span>© 2026 DRT Gateway</span><span className="demo-disclaimer"><i /> UI preview · metrics shown are sample data</span><span>v0.1.0 <span className="footer-dot">·</span> <button onClick={() => notify('You are all caught up')}>System status</button></span></footer>
+      </main>
+    </div>
+    {modalRule !== undefined && <PolicyModal rule={modalRule} onClose={() => setModalRule(undefined)} onSave={saveRule} />}
+    <Toast message={toast} onClose={() => setToast('')} />
+  </div>
+}
+
+const rootElement = document.getElementById('root')
+if (rootElement) createRoot(rootElement).render(<React.StrictMode><App /></React.StrictMode>)
