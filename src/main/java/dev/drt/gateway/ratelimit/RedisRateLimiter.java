@@ -56,3 +56,15 @@ public class RedisRateLimiter {
         long ttl = Math.max(1_000, (long) Math.ceil(policy.getLimit() / refill * 2_000));
         return execute(tokenBucket, List.of(key), Long.toString(policy.getLimit()),
                 Double.toString(refill), "1", Long.toString(ttl), policy.getLimit());
+    }
+
+    private Mono<RateLimitDecision> checkSlidingLog(String key, Policy policy) {
+        long windowMs = windowMillis(policy);
+        return execute(slidingLog, List.of(key), Long.toString(windowMs),
+                Long.toString(policy.getLimit()), UUID.randomUUID().toString(), policy.getLimit());
+    }
+
+    private Mono<RateLimitDecision> checkSlidingCounter(String key, Policy policy) {
+        return execute(slidingCounter, List.of(key), Long.toString(windowMillis(policy)),
+                Long.toString(policy.getLimit()), policy.getLimit());
+    }
