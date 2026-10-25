@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="256" viewBox="0 0 1120 256" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">DRT Gateway</title>
+  <desc id="desc">DRT distributed rate limiting gateway logo in an illuminated midnight control-room theme.</desc>
+  <defs>
+    <linearGradient id="panel" x1="22" y1="16" x2="1088" y2="249" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#11111D"/>
+      <stop offset=".58" stop-color="#0B0B14"/>
+      <stop offset="1" stop-color="#080A12"/>
+    </linearGradient>
+    <linearGradient id="iris" x1="47" y1="44" x2="192" y2="204" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A8C8FF"/>
+      <stop offset=".5" stop-color="#6199F6"/>
+      <stop offset="1" stop-color="#476FC5"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(165 85 -94 182 966 41)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#315BA5" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#315BA5" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="4" y="4" width="1112" height="248" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+  </defs>
+  <rect x="12" y="12" width="1096" height="232" rx="24" fill="#6199F6" fill-opacity=".045" filter="url(#soft)"/>
+  <rect x="12.5" y="12.5" width="1095" height="231" rx="23.5" fill="url(#panel)" stroke="#4F4F80"/>
+  <rect x="13" y="13" width="1094" height="230" rx="23" fill="url(#glow)"/>
+  <path d="M114 44 180 70v47c0 49-25 75-66 97-41-22-66-48-66-97V70l66-26Z" stroke="url(#iris)" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M75 100h78M75 119h57M75 138h39" stroke="#A3A3B3" stroke-opacity=".62" stroke-width="5" stroke-linecap="round"/>
+  <path d="m143 91-21 31h18l-17 29 38-39h-20l18-21h-16Z" fill="url(#iris)"/>
+  <circle cx="114" cy="117" r="85" stroke="#4F4F80" stroke-opacity=".42"/>
+  <text x="226" y="126" fill="#FCFCFC" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="69" font-weight="600" letter-spacing="-5">DRT</text>
+  <text x="232" y="164" fill="#A3A3B3" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="16" font-weight="500" letter-spacing="7">GATEWAY</text>
+  <path d="M400 76v108" stroke="#4F4F80" stroke-opacity=".7"/>
+  <text x="438" y="111" fill="#6199F6" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="12" letter-spacing="2.5">DISTRIBUTED RATE LIMITING</text>
+  <text x="438" y="151" fill="#FCFCFC" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="400" letter-spacing="-.45">Global limits. Atomic decisions.</text>
+  <text x="438" y="181" fill="#757580" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="13" letter-spacing=".15">Spring Cloud Gateway · Redis Lua · Reactive by design</text>
+  <g opacity=".78">
+    <path d="M944 164V94" stroke="#4F4F80" stroke-opacity=".65"/>
+    <path d="M972 164v-42" stroke="#6199F6" stroke-opacity=".52" stroke-width="4" stroke-linecap="round"/>
+    <path d="M995 164V78" stroke="#6199F6" stroke-opacity=".8" stroke-width="4" stroke-linecap="round"/>
+    <path d="M1018 164v-59" stroke="#6199F6" stroke-opacity=".56" stroke-width="4" stroke-linecap="round"/>
+    <path d="M1041 164V92" stroke="#4F4F80" stroke-opacity=".7" stroke-width="4" stroke-linecap="round"/>
+    <path d="M935 175h124" stroke="#4F4F80" stroke-opacity=".7"/>
+    <circle cx="995" cy="78" r="5" fill="#A8C8FF"/>
+  </g>
+</svg>
