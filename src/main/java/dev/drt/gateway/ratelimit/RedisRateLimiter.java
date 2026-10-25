@@ -45,3 +45,14 @@ public class RedisRateLimiter {
     public Mono<RateLimitDecision> check(String dimension, String identity, Policy policy) {
         String key = properties.getKeyPrefix() + ":{" + dimension + ":" + sha256(identity) + "}";
         return switch (properties.getAlgorithm()) {
+            case TOKEN_BUCKET -> checkTokenBucket(key, policy);
+            case SLIDING_WINDOW_LOG -> checkSlidingLog(key, policy);
+            case SLIDING_WINDOW_COUNTER -> checkSlidingCounter(key, policy);
+        };
+    }
+
+    private Mono<RateLimitDecision> checkTokenBucket(String key, Policy policy) {
+        double refill = policy.getRefillPerSecond();
+        long ttl = Math.max(1_000, (long) Math.ceil(policy.getLimit() / refill * 2_000));
+        return execute(tokenBucket, List.of(key), Long.toString(policy.getLimit()),
+                Double.toString(refill), "1", Long.toString(ttl), policy.getLimit());
