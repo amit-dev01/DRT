@@ -23,6 +23,18 @@ mvn spring-boot:run
 
 The Redis URL/credentials and all policies can be set with environment variables listed in `src/main/resources/application.yml`.
 
+## Frontend control-plane preview
+
+The React/Vite dashboard lives in `frontend/`. Run it separately from the gateway:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Vite serves the UI on port `5173`. Set `GATEWAY_TARGET` if the Spring Gateway is not at `http://localhost:8080`; the dev server proxies `/api` and `/actuator` requests. The current dashboard is an interactive UI preview: sample traffic/Redis metrics are clearly labeled, and policy edits and test requests are held in browser state rather than persisted to the gateway. Validate it with `npm test` and build static assets with `npm run build`.
+
 ## Identity and policies
 
 The global filter applies enabled policies independently, in this order:
