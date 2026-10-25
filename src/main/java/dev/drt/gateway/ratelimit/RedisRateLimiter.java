@@ -22,3 +22,14 @@ import java.util.UUID;
 public class RedisRateLimiter {
     private final ReactiveStringRedisTemplate redis;
     private final RateLimitProperties properties;
+    private final RedisScript<List> tokenBucket;
+    private final RedisScript<List> slidingLog;
+    private final RedisScript<List> slidingCounter;
+
+    public RedisRateLimiter(ReactiveStringRedisTemplate redis, RateLimitProperties properties) {
+        this.redis = redis;
+        this.properties = properties;
+        this.tokenBucket = script("redis/token_bucket.lua");
+        this.slidingLog = script("redis/sliding_window_log.lua");
+        this.slidingCounter = script("redis/sliding_window_counter.lua");
+    }
