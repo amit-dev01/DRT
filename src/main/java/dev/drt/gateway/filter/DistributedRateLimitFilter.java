@@ -82,3 +82,13 @@ public class DistributedRateLimitFilter implements GlobalFilter, Ordered {
     }
 
     private Mono<Void> reject(ServerWebExchange exchange, RateLimitDecision decision) {
+        long retrySeconds = Math.max(1, (decision.retryAfterMillis() + 999) / 1000);
+        exchange.getResponse().setStatusCode(HttpStatus.TOO_MANY_REQUESTS);
+        exchange.getResponse().getHeaders().set("RateLimit-Limit", Long.toString(decision.limit()));
+        exchange.getResponse().getHeaders().set("RateLimit-Remaining", Long.toString(decision.remaining()));
+        exchange.getResponse().getHeaders().set("Retry-After", Long.toString(retrySeconds));
+        exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
+        byte[] body = ("{\"error\":\"rate_limit_exceeded\",\"retryAfterSeconds\":" + retrySeconds + "}")
+                .getBytes(StandardCharsets.UTF_8);
+        return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(body)));
+    }
