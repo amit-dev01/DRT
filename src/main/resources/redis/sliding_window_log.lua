@@ -5,3 +5,10 @@ local windowMs = tonumber(ARGV[1])
 local maxRequests = tonumber(ARGV[2])
 local member = ARGV[3]
 redis.call('ZREMRANGEBYSCORE', KEYS[1], '-inf', now - windowMs)
+local count = redis.call('ZCARD', KEYS[1])
+local allowed = 0
+local retryMs = 0
+if count < maxRequests then
+  redis.call('ZADD', KEYS[1], now, member)
+  count = count + 1
+  allowed = 1
