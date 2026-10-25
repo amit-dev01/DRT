@@ -199,3 +199,18 @@ function SettingsPage() {
   </>
 }
 
+function PolicyModal({ rule, onClose, onSave }) {
+  const [name, setName] = useState(rule?.name || '')
+  const [scope, setScope] = useState(rule?.scope || '/api/v1/**')
+  const [limit, setLimit] = useState(rule?.limit || '100 req / min')
+  const [algorithm, setAlgorithm] = useState(rule?.algorithm || 'Token bucket')
+  const [error, setError] = useState('')
+  function submit(e) { e.preventDefault(); if (!name.trim()) { setError('Give this policy a name.'); return } onSave({ ...(rule || {}), name, scope, limit, algorithm, dimensions: rule?.dimensions || ['IP'], burst: rule?.burst || '20', status: rule?.status || 'Active', id: rule?.id || `RL-${String(Date.now()).slice(-3)}`, color: rule?.color || 'mint' }) }
+  return <div className="modal-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) onClose() }}><section className="policy-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div className="modal-header"><div><span className="eyebrow">POLICY CONFIGURATION</span><h2 id="modal-title">{rule ? 'Edit policy' : 'Create a policy'}</h2></div><IconButton label="Close dialog" onClick={onClose}><X size={18} /></IconButton></div><form onSubmit={submit}><label>Policy name<input autoFocus value={name} onChange={e => { setName(e.target.value); setError('') }} placeholder="e.g. Public API standard" />{error && <small className="field-error">{error}</small>}</label><label>Route pattern<input value={scope} onChange={e => setScope(e.target.value)} placeholder="/api/v1/**" /></label><div className="form-two-col"><label>Algorithm<select value={algorithm} onChange={e => setAlgorithm(e.target.value)}><option>Token bucket</option><option>Sliding window log</option><option>Sliding window counter</option></select></label><label>Request limit<input value={limit} onChange={e => setLimit(e.target.value)} /></label></div><div className="modal-dimensions"><span>IDENTITY DIMENSIONS</span><div><span className="dimension-chip"><Globe2 size={12} />IP</span><span className="dimension-chip"><UserRound size={12} />User</span><span className="dimension-chip"><KeyRound size={12} />API key</span></div></div><div className="modal-footer"><button type="button" className="secondary-button" onClick={onClose}>Cancel</button><button type="submit" className="primary-button"><Check size={15} />{rule ? 'Save changes' : 'Create policy'}</button></div></form></section></div>
+}
+
+function Toast({ message, onClose }) {
+  if (!message) return null
+  return <div className="toast"><span><Check size={15} /></span>{message}<button onClick={onClose} aria-label="Dismiss"><X size={14} /></button></div>
+}
+
