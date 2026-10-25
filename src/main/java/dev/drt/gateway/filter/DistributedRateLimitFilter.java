@@ -45,3 +45,12 @@ public class DistributedRateLimitFilter implements GlobalFilter, Ordered {
                     }
                     log.error("Redis rate limiter unavailable; rejecting request because failure-mode=CLOSED", error);
                     return Mono.error(new RateLimiterUnavailableException(error));
+                })
+                .flatMap(result -> result.map(decision -> reject(exchange, decision))
+                        .orElseGet(() -> chain.filter(exchange)))
+                .onErrorResume(RateLimiterUnavailableException.class, ignored -> unavailable(exchange)));
+    }
+
+    private Mono<List<Identity>> identities(ServerWebExchange exchange) {
+        String explicitUser = exchange.getRequest().getHeaders().getFirst("X-User-Id");
+        String apiKey = exchange.getRequest().getHeaders().getFirst("X-API-Key");
