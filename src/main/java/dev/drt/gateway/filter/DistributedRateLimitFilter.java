@@ -92,3 +92,12 @@ public class DistributedRateLimitFilter implements GlobalFilter, Ordered {
                 .getBytes(StandardCharsets.UTF_8);
         return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(body)));
     }
+
+    private Mono<Void> unavailable(ServerWebExchange exchange) {
+        exchange.getResponse().setStatusCode(HttpStatus.SERVICE_UNAVAILABLE);
+        exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
+        byte[] body = "{\"error\":\"rate_limit_service_unavailable\"}".getBytes(StandardCharsets.UTF_8);
+        return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(body)));
+    }
+
+    private static boolean nonBlank(String value) { return value != null && !value.isBlank(); }
