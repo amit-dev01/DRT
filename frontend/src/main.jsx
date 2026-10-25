@@ -160,3 +160,24 @@ function Overview({ rules, onEdit, onToggle, range, setRange, onViewAll }) {
   </>
 }
 
+function PoliciesPage({ rules, onEdit, onToggle }) {
+  const [query, setQuery] = useState('')
+  const [filter, setFilter] = useState('All policies')
+  const filtered = rules.filter(rule => (filter === 'All policies' || rule.status === filter) && `${rule.name} ${rule.scope} ${rule.algorithm}`.toLowerCase().includes(query.toLowerCase()))
+  return <><Heading title="Rate limit policies" subtitle="Create and manage the rules protecting your API from abuse." right={<button className="primary-button" onClick={() => onEdit(null)}><Plus size={15} />Create policy</button>} />
+    <div className="policy-summary-row"><div className="summary-tile"><span className="summary-icon mint"><ShieldCheck size={17} /></span><div><strong>{rules.filter(r => r.status === 'Active').length}</strong><small>Active policies</small></div></div><div className="summary-tile"><span className="summary-icon orange"><ShieldAlert size={17} /></span><div><strong>2,281</strong><small>Requests blocked today</small></div></div><div className="summary-tile"><span className="summary-icon blue"><Network size={17} /></span><div><strong>3</strong><small>Identity dimensions</small></div></div></div>
+    <section className="panel full-table-panel"><div className="table-toolbar"><div className="search-field"><Search size={16} /><input aria-label="Search policies" placeholder="Search policies..." value={query} onChange={e => setQuery(e.target.value)} /></div><select value={filter} onChange={e => setFilter(e.target.value)} aria-label="Filter policy status"><option>All policies</option><option>Active</option><option>Paused</option></select><button className="secondary-button"><SlidersHorizontal size={14} />Filters</button></div><RuleTable rules={filtered} onEdit={onEdit} onToggle={onToggle} /></section>
+    <div className="info-banner"><span><Sparkles size={16} /></span><div><strong>Protect every request.</strong><p>Policies are enforced atomically across all gateway instances using Redis Lua scripts.</p></div><button onClick={() => onEdit(null)}>Add a policy <ArrowRight size={14} /></button></div>
+  </>
+}
+
+function ActivityPage({ events, onTest }) {
+  const [query, setQuery] = useState('')
+  const shown = events.filter(e => `${e.path} ${e.identity} ${e.dimension} ${e.status}`.toLowerCase().includes(query.toLowerCase()))
+  return <><Heading title="Live traffic" subtitle="Inspect recent requests flowing through your gateway." right={<button className="secondary-button" onClick={onTest}><Play size={14} />Generate test request</button>} />
+    <div className="traffic-toolbar"><div className="live-indicator"><i />Sample event stream <span>·</span> 1.2k req/min</div><div className="traffic-tools"><div className="search-field"><Search size={15} /><input aria-label="Search requests" placeholder="Search requests..." value={query} onChange={e => setQuery(e.target.value)} /></div><select aria-label="Filter by response"><option>All responses</option><option>Allowed</option><option>Rate limited</option></select></div></div>
+    <section className="panel activity-panel"><div className="traffic-table-wrap"><table className="traffic-table"><thead><tr><th>TIME</th><th>REQUEST</th><th>IDENTITY</th><th>LIMIT DIMENSION</th><th>STATUS</th><th>LATENCY</th></tr></thead><tbody>{shown.map((event, i) => <tr key={event.id}><td className="time-cell">{event.time}</td><td><span className={`method ${event.method.toLowerCase()}`}>{event.method}</span><code>{event.path}</code></td><td className="identity-cell">{event.identity}</td><td><span className="dimension-chip">{event.dimension}</span></td><td><span className={`response-pill ${event.status === 429 ? 'response-limited' : 'response-allowed'}`}><i />{event.status} {event.status === 429 ? 'Limited' : 'Allowed'}</span></td><td className="latency-cell">{event.latency}</td></tr>)}</tbody></table>{shown.length === 0 && <div className="empty-state">No requests match your search.</div>}</div></section>
+    <div className="activity-footnote"><ShieldAlert size={15} /><span>Rate-limited requests are rejected before reaching your upstream service.</span><button>View response headers <ArrowRight size={13} /></button></div>
+  </>
+}
+
