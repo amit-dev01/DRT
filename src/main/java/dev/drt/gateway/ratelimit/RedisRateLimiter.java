@@ -80,3 +80,14 @@ public class RedisRateLimiter {
     }
 
     private Mono<RateLimitDecision> execute(RedisScript<List> script, List<String> keys,
+                                            String arg1, String arg2, String arg3, String arg4, long limit) {
+        Object[] args;
+        if (arg4 != null) args = new Object[]{arg1, arg2, arg3, arg4};
+        else if (arg3 != null) args = new Object[]{arg1, arg2, arg3};
+        else args = new Object[]{arg1, arg2};
+        return redis.execute(script, keys, args)
+                .next()
+                .map(result -> new RateLimitDecision(number(result, 0) == 1,
+                        number(result, 1), number(result, 2), limit))
+                .switchIfEmpty(Mono.error(new IllegalStateException("Redis rate limit script returned no result")));
+    }
