@@ -37,3 +37,56 @@ function IconButton({ children, label, onClick, className = '' }) {
   return <button className={`icon-button ${className}`} aria-label={label} onClick={onClick}>{children}</button>
 }
 
+function Sidebar({ page, setPage, mobileOpen, closeMobile }) {
+  return <>
+    {mobileOpen && <button className="mobile-scrim" onClick={closeMobile} aria-label="Close navigation" />}
+    <aside className={`sidebar ${mobileOpen ? 'sidebar-open' : ''}`}>
+      <div className="brand-row">
+        <div className="brand-mark"><Shield size={21} strokeWidth={2.5} /><span /></div>
+        <div className="brand-name">drt<span>gateway</span></div>
+        <IconButton className="mobile-close" label="Close menu" onClick={closeMobile}><X size={18} /></IconButton>
+      </div>
+      <button className="workspace-switch">
+        <span className="workspace-avatar">A</span>
+        <span className="workspace-copy"><strong>Acme workspace</strong><small>Preview environment</small></span>
+        <ChevronDown size={15} />
+      </button>
+      <div className="nav-label">WORKSPACE</div>
+      <nav className="main-nav" aria-label="Main navigation">
+        {navItems.map(({ label, icon: Icon, count }) => <button key={label} onClick={() => { setPage(label); closeMobile() }} className={`nav-item ${page === label ? 'active' : ''}`}>
+          <Icon size={17} strokeWidth={1.9} /><span>{label}</span>{count && <span className={`nav-count ${count === 'LIVE' ? 'live-count' : ''}`}>{count === 'LIVE' && <i />}{count}</span>}
+        </button>)}
+      </nav>
+      <div className="sidebar-divider" />
+      <div className="nav-label">CONFIGURATION</div>
+      <button className={`nav-item ${page === 'Settings' ? 'active' : ''}`} onClick={() => { setPage('Settings'); closeMobile() }}><Settings2 size={17} /><span>Settings</span></button>
+      <button className="nav-item" onClick={() => setPage('API docs')}><TerminalSquare size={17} /><span>API docs</span><ArrowUpRight size={13} className="external-icon" /></button>
+      <div className="sidebar-spacer" />
+      <div className="redis-mini">
+        <div className="redis-mini-top"><span className="status-dot" />Redis cluster<span className="online-text">Healthy</span></div>
+        <div className="redis-mini-sub">3 nodes <span>·</span> 2.4 ms avg</div>
+        <div className="redis-spark"><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /></div>
+      </div>
+      <div className="sidebar-divider" />
+      <button className="profile-row">
+        <span className="profile-avatar">JD</span><span className="profile-copy"><strong>Jordan Davis</strong><small>Platform admin</small></span><MoreHorizontal size={18} />
+      </button>
+    </aside>
+  </>
+}
+
+function Topbar({ onMenu, onTest, page }) {
+  return <header className="topbar">
+    <div className="topbar-left"><IconButton className="mobile-menu" label="Open menu" onClick={onMenu}><Menu size={19} /></IconButton><div className="breadcrumbs"><span>Control plane</span><ChevronRight size={14} /><strong>{page}</strong></div></div>
+    <div className="topbar-right"><div className="environment-pill preview-environment"><i />Preview</div><div className="topbar-separator" />
+      <button className="topbar-action help-action"><CircleHelp size={16} />Help center</button>
+      <IconButton className="notification-button" label="Notifications"><Bell size={17} /><i /></IconButton>
+      <button className="topbar-test" onClick={onTest}><Play size={14} fill="currentColor" /> Test request</button>
+    </div>
+  </header>
+}
+
+function Heading({ title, subtitle, right }) {
+  return <div className="page-heading"><div><div className="eyebrow">GATEWAY CONTROL PLANE</div><h1>{title}</h1><p>{subtitle}</p></div>{right}</div>
+}
+
