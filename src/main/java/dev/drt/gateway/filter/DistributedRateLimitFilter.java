@@ -36,3 +36,12 @@ public class DistributedRateLimitFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        if (!properties.isEnabled()) return chain.filter(exchange);
+        return identities(exchange).flatMap(identities -> checkFirstRejected(identities)
+                .onErrorResume(error -> {
+                    if (properties.getFailureMode() == RateLimitProperties.FailureMode.OPEN) {
+                        log.warn("Redis rate limiter unavailable; allowing request because failure-mode=OPEN: {}", error.toString());
+                        return Mono.just(Optional.empty());
+                    }
+                    log.error("Redis rate limiter unavailable; rejecting request because failure-mode=CLOSED", error);
+                    return Mono.error(new RateLimiterUnavailableException(error));
