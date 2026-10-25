@@ -33,3 +33,15 @@ public class RedisRateLimiter {
         this.slidingLog = script("redis/sliding_window_log.lua");
         this.slidingCounter = script("redis/sliding_window_counter.lua");
     }
+
+    @SuppressWarnings("unchecked")
+    private static RedisScript<List> script(String classpathLocation) {
+        DefaultRedisScript<List> script = new DefaultRedisScript<>();
+        script.setScriptSource(new ResourceScriptSource(new ClassPathResource(classpathLocation)));
+        script.setResultType(List.class);
+        return (RedisScript<List>) script;
+    }
+
+    public Mono<RateLimitDecision> check(String dimension, String identity, Policy policy) {
+        String key = properties.getKeyPrefix() + ":{" + dimension + ":" + sha256(identity) + "}";
+        return switch (properties.getAlgorithm()) {
