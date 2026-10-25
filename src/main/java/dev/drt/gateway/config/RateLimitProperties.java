@@ -45,3 +45,18 @@ public class RateLimitProperties {
         public void setWindow(Duration window) { this.window = window; }
     }
 
+    public boolean isEnabled() { return enabled; }
+    public void setEnabled(boolean enabled) { this.enabled = enabled; }
+    public Algorithm getAlgorithm() { return algorithm; }
+    public void setAlgorithm(Algorithm algorithm) { this.algorithm = algorithm; }
+    public FailureMode getFailureMode() { return failureMode; }
+    public void setFailureMode(FailureMode failureMode) { this.failureMode = failureMode; }
+    public String getKeyPrefix() { return keyPrefix; }
+    public void setKeyPrefix(String keyPrefix) { this.keyPrefix = keyPrefix; }
+    public Policy getUser() { return user; }
+    public void setUser(Policy user) { this.user = user; }
+    public Policy getIp() { return ip; }
+    public void setIp(Policy ip) { this.ip = ip; }
+    public Policy getApiKey() { return apiKey; }
+    public void setApiKey(Policy apiKey) { this.apiKey = apiKey; }
+}
