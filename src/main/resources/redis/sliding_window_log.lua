@@ -12,3 +12,9 @@ if count < maxRequests then
   redis.call('ZADD', KEYS[1], now, member)
   count = count + 1
   allowed = 1
+  redis.call('PEXPIRE', KEYS[1], windowMs + 1000)
+else
+  local oldest = redis.call('ZRANGE', KEYS[1], 0, 0, 'WITHSCORES')
+  if oldest[2] then retryMs = math.max(1, tonumber(oldest[2]) + windowMs - now) end
+end
+return {allowed, math.max(0, maxRequests - count), retryMs}
