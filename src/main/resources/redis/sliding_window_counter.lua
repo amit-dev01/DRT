@@ -20,3 +20,13 @@ end
 local estimate = currentCount + previousCount * ((windowMs - elapsed) / windowMs)
 local allowed = 0
 local retryMs = 0
+if estimate < maxRequests then
+  currentCount = currentCount + 1
+  estimate = estimate + 1
+  allowed = 1
+else
+  retryMs = math.max(1, windowMs - elapsed)
+end
+redis.call('HSET', KEYS[1], 'bucket', bucket, 'current', currentCount, 'previous', previousCount)
+redis.call('PEXPIRE', KEYS[1], windowMs * 3)
+return {allowed, math.max(0, math.floor(maxRequests - estimate)), retryMs}
