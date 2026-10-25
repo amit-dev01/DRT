@@ -26,3 +26,13 @@ import java.util.Optional;
 @Component
 public class DistributedRateLimitFilter implements GlobalFilter, Ordered {
     private static final Logger log = LoggerFactory.getLogger(DistributedRateLimitFilter.class);
+    private final RedisRateLimiter limiter;
+    private final RateLimitProperties properties;
+
+    public DistributedRateLimitFilter(RedisRateLimiter limiter, RateLimitProperties properties) {
+        this.limiter = limiter;
+        this.properties = properties;
+    }
+
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
