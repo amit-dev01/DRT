@@ -103,3 +103,14 @@ public class RedisRateLimiter {
             throw new IllegalStateException("Rate limit window must be greater than zero");
         }
         return Math.max(1, window.toMillis());
+    }
+
+    private static String sha256(String value) {
+        try {
+            byte[] digest = MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8));
+            return HexFormat.of().formatHex(digest);
+        } catch (NoSuchAlgorithmException impossible) {
+            throw new IllegalStateException("SHA-256 is not available", impossible);
+        }
+    }
+}
