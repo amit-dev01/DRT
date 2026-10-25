@@ -68,3 +68,15 @@ public class RedisRateLimiter {
         return execute(slidingCounter, List.of(key), Long.toString(windowMillis(policy)),
                 Long.toString(policy.getLimit()), policy.getLimit());
     }
+
+    private Mono<RateLimitDecision> execute(RedisScript<List> script, List<String> keys,
+                                            String arg1, String arg2, long limit) {
+        return execute(script, keys, arg1, arg2, null, null, limit);
+    }
+
+    private Mono<RateLimitDecision> execute(RedisScript<List> script, List<String> keys,
+                                            String arg1, String arg2, String arg3, long limit) {
+        return execute(script, keys, arg1, arg2, arg3, null, limit);
+    }
+
+    private Mono<RateLimitDecision> execute(RedisScript<List> script, List<String> keys,
