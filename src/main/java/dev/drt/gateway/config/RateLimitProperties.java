@@ -29,3 +29,19 @@ public class RateLimitProperties {
         private Duration window;
 
         public Policy() { }
+        public Policy(boolean enabled, long limit, double refillPerSecond, Duration window) {
+            this.enabled = enabled;
+            this.limit = limit;
+            this.refillPerSecond = refillPerSecond;
+            this.window = window;
+        }
+        public boolean isEnabled() { return enabled; }
+        public void setEnabled(boolean enabled) { this.enabled = enabled; }
+        public long getLimit() { return limit; }
+        public void setLimit(long limit) { this.limit = limit; }
+        public double getRefillPerSecond() { return refillPerSecond; }
+        public void setRefillPerSecond(double refillPerSecond) { this.refillPerSecond = refillPerSecond; }
+        public Duration getWindow() { return window; }
+        public void setWindow(Duration window) { this.window = window; }
+    }
+
