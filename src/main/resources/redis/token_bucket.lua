@@ -14,3 +14,10 @@ local allowed = 0
 local retryMs = 0
 if tokens >= cost then
   tokens = tokens - cost
+  allowed = 1
+else
+  retryMs = math.ceil((cost - tokens) / refillPerMs)
+end
+redis.call('HSET', KEYS[1], 'tokens', tokens, 'timestamp', now)
+redis.call('PEXPIRE', KEYS[1], ttlMs)
+return {allowed, math.floor(tokens), retryMs}
