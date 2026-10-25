@@ -17,3 +17,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Component
+public class DistributedRateLimitFilter implements GlobalFilter, Ordered {
+    private static final Logger log = LoggerFactory.getLogger(DistributedRateLimitFilter.class);
