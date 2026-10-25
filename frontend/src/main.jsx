@@ -120,3 +120,43 @@ function TrafficChart({ range, setRange }) {
   </section>
 }
 
+function RuleTable({ rules, onEdit, onToggle, compact = false }) {
+  return <div className="table-scroll"><table className="rules-table"><thead><tr><th>POLICY</th><th>ALGORITHM</th><th>LIMIT</th><th>DIMENSIONS</th><th>STATUS</th><th /></tr></thead><tbody>
+    {rules.map(rule => <tr key={rule.id}>
+      <td><div className="policy-name"><span className={`policy-icon ${rule.color}`}><ShieldCheck size={16} /></span><span><strong>{rule.name}</strong><small>{rule.scope}</small></span></div></td>
+      <td><span className="algorithm-label">{rule.algorithm}</span></td>
+      <td><strong className="limit-label">{rule.limit}</strong>{rule.burst !== '—' && <small className="burst-label">Burst {rule.burst}</small>}</td>
+      <td><div className="dimension-list">{rule.dimensions.map(d => <span key={d} className="dimension-chip">{d === 'User' ? <UserRound size={11} /> : d === 'IP' ? <Globe2 size={11} /> : <KeyRound size={11} />}{d}</span>)}</div></td>
+      <td><button className={`status-pill ${rule.status === 'Active' ? 'status-active' : 'status-paused'}`} onClick={() => onToggle(rule.id)}><i />{rule.status}</button></td>
+      <td><IconButton label={`Edit ${rule.name}`} onClick={() => onEdit(rule)}><MoreHorizontal size={18} /></IconButton></td>
+    </tr>)}
+  </tbody></table>{rules.length === 0 && <div className="empty-state">No policies match your search.</div>}</div>
+}
+
+function Overview({ rules, onEdit, onToggle, range, setRange, onViewAll }) {
+  const activeRules = rules.filter(r => r.status === 'Active').length
+  return <>
+    <Heading title="Overview" subtitle="A real-time view of your API traffic and rate limit policies." right={<div className="heading-updated"><span className="status-dot" />Sample metrics <span>·</span> Interactive preview</div>} />
+    <div className="metrics-grid">
+      <MetricCard label="Requests today" value="2.84M" delta="12.8%" positive icon={Activity} accent="mint" footnote="compared to yesterday" />
+      <MetricCard label="Allowed requests" value="99.92%" delta="0.4%" positive icon={ShieldCheck} accent="blue" footnote="of total traffic" />
+      <MetricCard label="Rate limited" value="2,281" delta="8.2%" positive={false} icon={ShieldAlert} accent="orange" footnote="requests blocked today" />
+      <MetricCard label="Gateway latency" value="38 ms" delta="4.1%" positive icon={Zap} accent="purple" footnote="p95 · across 3 regions" />
+    </div>
+    <div className="main-grid"><TrafficChart range={range} setRange={setRange} /><aside className="side-stack">
+      <section className="panel algorithm-panel"><div className="panel-header"><div><div className="panel-title">Active algorithm</div><div className="panel-subtitle">Applied across all policies</div></div><span className="icon-soft"><Settings2 size={16} /></span></div>
+        <div className="algorithm-card"><div className="algorithm-emblem"><Gauge size={19} /></div><div><strong>Token bucket</strong><small>Atomic Redis Lua script</small></div><span className="algorithm-live"><i />LIVE</span></div>
+        <div className="algorithm-facts"><div><span>Active policies</span><strong>{activeRules} <small>of {rules.length}</small></strong></div><div><span>Default failure mode</span><strong className="failure-open"><i />Fail open</strong></div></div>
+        <button className="text-link" onClick={() => onViewAll('Rate limits')}>Manage policies <ArrowRight size={14} /></button>
+      </section>
+      <section className="panel redis-panel"><div className="panel-header"><div><div className="panel-title">Redis cluster</div><div className="panel-subtitle">Shared limiter state</div></div><span className="healthy-badge"><i />Healthy</span></div>
+        <div className="redis-big-stat"><strong>2.4<span>ms</span></strong><small>average response time</small></div><div className="redis-nodes"><div><span className="node-check"><Check size={11} /></span><span>redis-primary-01</span><strong>Leader</strong><small>12.8 MB</small></div><div><span className="node-check"><Check size={11} /></span><span>redis-replica-02</span><strong>Replica</strong><small>12.6 MB</small></div><div><span className="node-check"><Check size={11} /></span><span>redis-replica-03</span><strong>Replica</strong><small>12.7 MB</small></div></div><button className="text-link" onClick={() => onViewAll('Redis health')}>View cluster health <ArrowRight size={14} /></button>
+      </section>
+    </aside></div>
+    <section className="panel policy-panel"><div className="panel-header policy-panel-header"><div><div className="panel-title">Rate limit policies <span className="count-bubble">{rules.length}</span></div><div className="panel-subtitle">Policies currently protecting your APIs</div></div><div className="policy-actions"><button className="secondary-button" onClick={() => onViewAll('Rate limits')}><SlidersHorizontal size={14} />Manage policies</button><button className="primary-button" onClick={() => onEdit(null)}><Plus size={15} />New policy</button></div></div>
+      <RuleTable rules={rules.slice(0, 5)} onEdit={onEdit} onToggle={onToggle} />
+      <button className="view-all-row" onClick={() => onViewAll('Rate limits')}>View all policies <ArrowRight size={14} /></button>
+    </section>
+  </>
+}
+
