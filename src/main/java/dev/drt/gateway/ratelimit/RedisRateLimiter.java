@@ -10,3 +10,15 @@ import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
+import java.util.HexFormat;
+import java.util.List;
+import java.util.UUID;
+
+@Component
+public class RedisRateLimiter {
+    private final ReactiveStringRedisTemplate redis;
+    private final RateLimitProperties properties;
