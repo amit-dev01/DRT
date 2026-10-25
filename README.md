@@ -46,3 +46,19 @@ For the two sliding-window strategies, `limit` is the maximum request count in `
 All keys touched by a script are within a single Redis Cluster hash slot. Redis is the shared source of truth; do not add per-instance local counters if strict global limits are required.
 
 ## Redis outage policy (important)
+
+`RATE_LIMIT_FAILURE_MODE=OPEN` (default) lets traffic through if Redis errors. This favors API availability, but limits are temporarily unenforced and an attacker can exploit an outage. `CLOSED` returns `503 Service Unavailable` when Redis cannot make a decision. This protects downstream capacity but makes Redis availability part of API availability. Choose explicitly based on the protected resource and threat model; alert on Redis errors either way. A `429` is only returned for a successful Redis decision that exceeds policy.
+
+## Configuration example
+
+```yaml
+drt:
+  rate-limit:
+    algorithm: TOKEN_BUCKET
+    failure-mode: CLOSED
+    user: { enabled: true, limit: 100, refill-per-second: 10, window: 1m }
+    ip: { enabled: true, limit: 300, refill-per-second: 30, window: 1m }
+    api-key: { enabled: true, limit: 1000, refill-per-second: 100, window: 1m }
+```
+
+The custom `DistributedRateLimitFilter` is a `GlobalFilter`, so it applies to all matched gateway routes. Redis health is exposed through Spring Boot Actuator at `/actuator/health`.
