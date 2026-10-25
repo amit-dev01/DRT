@@ -90,3 +90,33 @@ function Heading({ title, subtitle, right }) {
   return <div className="page-heading"><div><div className="eyebrow">GATEWAY CONTROL PLANE</div><h1>{title}</h1><p>{subtitle}</p></div>{right}</div>
 }
 
+function MetricCard({ label, value, delta, positive, icon: Icon, accent, footnote }) {
+  return <article className="metric-card">
+    <div className="metric-top"><span>{label}</span><span className={`metric-icon ${accent}`}><Icon size={17} /></span></div>
+    <div className="metric-value-row"><strong>{value}</strong><span className={`metric-delta ${positive ? 'positive' : 'negative'}`}>{positive ? <ArrowUpRight size={13} /> : <ArrowDownRight size={13} />}{delta}</span></div>
+    <div className="metric-footnote">{footnote}</div>
+  </article>
+}
+
+function TrafficChart({ range, setRange }) {
+  const [series, setSeries] = useState('requests')
+  const points = series === 'requests'
+    ? '0,98 28,93 56,100 84,83 112,88 140,70 168,75 196,58 224,66 252,47 280,56 308,40 336,52 364,30 392,38 420,18 448,32 476,25 504,40 532,20 560,28 588,10 616,22 644,13 672,29 700,15 728,25 756,8 784,18'
+    : '0,115 28,118 56,112 84,120 112,108 140,114 168,103 196,110 224,100 252,108 280,96 308,103 336,88 364,95 392,86 420,98 448,82 476,92 504,76 532,88 560,72 588,84 616,67 644,76 672,61 700,73 728,58 756,67 784,51'
+  return <section className="panel chart-panel">
+    <div className="panel-header chart-header"><div><div className="panel-title">Request volume</div><div className="panel-subtitle">Traffic processed by the gateway</div></div>
+      <div className="chart-controls"><div className="series-toggle"><button onClick={() => setSeries('requests')} className={series === 'requests' ? 'selected' : ''}><i className="legend-dot request-dot" />Requests</button><button onClick={() => setSeries('blocked')} className={series === 'blocked' ? 'selected' : ''}><i className="legend-dot blocked-dot" />Blocked</button></div><select aria-label="Chart time range" value={range} onChange={e => setRange(e.target.value)}><option>Last 24 hours</option><option>Last 7 days</option><option>Last 30 days</option></select></div>
+    </div>
+    <div className="chart-summary"><strong>{series === 'requests' ? '18,429' : '142'}</strong><span>req / min</span><span className="chart-summary-change"><ArrowUpRight size={13} /> 12.8%</span><span className="chart-summary-note">vs. previous period</span></div>
+    <div className="chart-wrap"><div className="chart-y-labels"><span>20k</span><span>15k</span><span>10k</span><span>5k</span><span>0</span></div><svg className="traffic-chart" viewBox="0 0 784 140" preserveAspectRatio="none" role="img" aria-label={`${series} over the last 24 hours`}>
+      <defs><linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stopColor={series === 'requests' ? '#20b486' : '#f59e0b'} stopOpacity=".2"/><stop offset="100%" stopColor={series === 'requests' ? '#20b486' : '#f59e0b'} stopOpacity="0"/></linearGradient></defs>
+      {[12, 42, 72, 102, 132].map(y => <line key={y} x1="0" x2="784" y1={y} y2={y} className="chart-grid" />)}
+      <polygon points={`0,140 ${points} 784,140`} fill="url(#chartFill)" />
+      <polyline points={points} fill="none" stroke={series === 'requests' ? '#18a77b' : '#e89a25'} strokeWidth="2.3" vectorEffect="non-scaling-stroke" strokeLinejoin="round" strokeLinecap="round" />
+      <line x1="644" x2="644" y1="0" y2="140" className="chart-guide" />
+      <circle cx="644" cy="13" r="4" fill="white" stroke={series === 'requests' ? '#18a77b' : '#e89a25'} strokeWidth="2.5" />
+    </svg><div className="chart-x-labels"><span>12 AM</span><span>4 AM</span><span>8 AM</span><span>12 PM</span><span>4 PM</span><span>8 PM</span><span>Now</span></div></div>
+    <div className="chart-bottom-note"><span className="chart-note-icon"><Clock3 size={13} /></span>Peak traffic at <strong>11:42 AM</strong><span className="note-separator">·</span><span>18.4k requests / min</span><button>View analytics <ArrowRight size={13} /></button></div>
+  </section>
+}
+
