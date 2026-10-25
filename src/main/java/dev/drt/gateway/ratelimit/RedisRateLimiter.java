@@ -91,3 +91,15 @@ public class RedisRateLimiter {
                         number(result, 1), number(result, 2), limit))
                 .switchIfEmpty(Mono.error(new IllegalStateException("Redis rate limit script returned no result")));
     }
+
+    private static long number(List<?> result, int index) {
+        Object value = result.get(index);
+        return value instanceof Number n ? n.longValue() : Long.parseLong(value.toString());
+    }
+
+    private static long windowMillis(Policy policy) {
+        Duration window = policy.getWindow();
+        if (window == null || window.isZero() || window.isNegative()) {
+            throw new IllegalStateException("Rate limit window must be greater than zero");
+        }
+        return Math.max(1, window.toMillis());
