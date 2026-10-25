@@ -101,3 +101,12 @@ public class DistributedRateLimitFilter implements GlobalFilter, Ordered {
     }
 
     private static boolean nonBlank(String value) { return value != null && !value.isBlank(); }
+
+    @Override public int getOrder() { return Ordered.HIGHEST_PRECEDENCE + 10; }
+
+    private record Identity(String dimension, String value, Policy policy) { }
+
+    private static final class RateLimiterUnavailableException extends RuntimeException {
+        private RateLimiterUnavailableException(Throwable cause) { super(cause); }
+    }
+}
