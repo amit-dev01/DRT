@@ -26,6 +26,7 @@ describe('rate-limit dashboard preview', () => {
     fireEvent.click(within(dialog).getByRole('button', { name: 'Create policy' }))
 
     expect(screen.getByText('Internal tools')).toBeTruthy()
+    expect(screen.getByRole('button', { name: /Rate limits.*6/ })).toBeTruthy()
   })
 
   it('simulates an over-limit response after a short request burst', () => {

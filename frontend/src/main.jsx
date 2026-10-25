@@ -37,7 +37,7 @@ function IconButton({ children, label, onClick, className = '' }) {
   return <button className={`icon-button ${className}`} aria-label={label} onClick={onClick}>{children}</button>
 }
 
-function Sidebar({ page, setPage, mobileOpen, closeMobile }) {
+function Sidebar({ page, setPage, mobileOpen, closeMobile, policyCount }) {
   return <>
     {mobileOpen && <button className="mobile-scrim" onClick={closeMobile} aria-label="Close navigation" />}
     <aside className={`sidebar ${mobileOpen ? 'sidebar-open' : ''}`}>
@@ -53,8 +53,8 @@ function Sidebar({ page, setPage, mobileOpen, closeMobile }) {
       </button>
       <div className="nav-label">WORKSPACE</div>
       <nav className="main-nav" aria-label="Main navigation">
-        {navItems.map(({ label, icon: Icon, count }) => <button key={label} onClick={() => { setPage(label); closeMobile() }} className={`nav-item ${page === label ? 'active' : ''}`}>
-          <Icon size={17} strokeWidth={1.9} /><span>{label}</span>{count && <span className={`nav-count ${count === 'LIVE' ? 'live-count' : ''}`}>{count === 'LIVE' && <i />}{count}</span>}
+        {navItems.map(({ label, icon: Icon, count }) => <button key={label} onClick={() => { setPage(label); closeMobile() }} className={`nav-item ${page === label ? 'active' : ''}`} aria-current={page === label ? 'page' : undefined}>
+          <Icon size={17} strokeWidth={1.9} /><span>{label}</span>{(count || label === 'Rate limits') && <span className={`nav-count ${count === 'LIVE' ? 'live-count' : ''}`}>{count === 'LIVE' && <i />}{label === 'Rate limits' ? policyCount : count}</span>}
         </button>)}
       </nav>
       <div className="sidebar-divider" />
@@ -246,7 +246,7 @@ export function App() {
   function viewPage(next) { setPage(next); window.scrollTo({ top: 0, behavior: 'smooth' }) }
 
   return <div className="app-shell">
-    <Sidebar page={page} setPage={viewPage} mobileOpen={mobileOpen} closeMobile={() => setMobileOpen(false)} />
+    <Sidebar page={page} setPage={viewPage} mobileOpen={mobileOpen} closeMobile={() => setMobileOpen(false)} policyCount={rules.length} />
     <div className="app-main"><Topbar onMenu={() => setMobileOpen(true)} onTest={runTest} page={page} />
       <main className="content">
         {page === 'Overview' && <Overview rules={rules} onEdit={setModalRule} onToggle={toggleRule} range={range} setRange={setRange} onViewAll={viewPage} />}
