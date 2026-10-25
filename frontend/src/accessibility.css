@@ -1,0 +1,16 @@
+/* Keep focus visible for keyboard users, including controls with custom surfaces. */
+:focus-visible {
+  outline: 3px solid rgba(42, 160, 125, .32);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
