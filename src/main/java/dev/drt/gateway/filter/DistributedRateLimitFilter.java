@@ -64,3 +64,12 @@ public class DistributedRateLimitFilter implements GlobalFilter, Ordered {
                     Policy userPolicy = properties.getUser();
                     String user = nonBlank(principalName) ? principalName : explicitUser;
                     if (userPolicy.isEnabled() && nonBlank(user)) identities.add(new Identity("user", user, userPolicy));
+                    Policy ipPolicy = properties.getIp();
+                    if (ipPolicy.isEnabled() && nonBlank(ip)) identities.add(new Identity("ip", ip, ipPolicy));
+                    Policy apiPolicy = properties.getApiKey();
+                    if (apiPolicy.isEnabled() && nonBlank(apiKey)) identities.add(new Identity("api-key", apiKey, apiPolicy));
+                    return identities;
+                });
+    }
+
+    private Mono<Optional<RateLimitDecision>> checkFirstRejected(List<Identity> identities) {
