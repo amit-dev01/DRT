@@ -73,3 +73,12 @@ public class DistributedRateLimitFilter implements GlobalFilter, Ordered {
     }
 
     private Mono<Optional<RateLimitDecision>> checkFirstRejected(List<Identity> identities) {
+        return Flux.fromIterable(identities)
+                .concatMap(identity -> limiter.check(identity.dimension, identity.value, identity.policy))
+                .filter(decision -> !decision.allowed())
+                .next()
+                .map(Optional::of)
+                .defaultIfEmpty(Optional.empty());
+    }
+
+    private Mono<Void> reject(ServerWebExchange exchange, RateLimitDecision decision) {
