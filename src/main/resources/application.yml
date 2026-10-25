@@ -16,3 +16,21 @@ spring:
       routes:
         - id: api
           uri: ${UPSTREAM_URI:http://localhost:8081}
+          predicates:
+            - Path=/api/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+# All policy checks use Redis Lua scripts. The same settings must be deployed to every gateway instance.
+drt:
+  rate-limit:
+    enabled: ${RATE_LIMIT_ENABLED:true}
+    algorithm: ${RATE_LIMIT_ALGORITHM:TOKEN_BUCKET} # TOKEN_BUCKET, SLIDING_WINDOW_LOG, SLIDING_WINDOW_COUNTER
