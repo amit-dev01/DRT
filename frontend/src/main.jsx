@@ -109,12 +109,12 @@ function TrafficChart({ range, setRange }) {
     </div>
     <div className="chart-summary"><strong>{series === 'requests' ? '18,429' : '142'}</strong><span>req / min</span><span className="chart-summary-change"><ArrowUpRight size={13} /> 12.8%</span><span className="chart-summary-note">vs. previous period</span></div>
     <div className="chart-wrap"><div className="chart-y-labels"><span>20k</span><span>15k</span><span>10k</span><span>5k</span><span>0</span></div><svg className="traffic-chart" viewBox="0 0 784 140" preserveAspectRatio="none" role="img" aria-label={`${series} over the last 24 hours`}>
-      <defs><linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stopColor={series === 'requests' ? '#20b486' : '#f59e0b'} stopOpacity=".2"/><stop offset="100%" stopColor={series === 'requests' ? '#20b486' : '#f59e0b'} stopOpacity="0"/></linearGradient></defs>
+      <defs><linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stopColor={series === 'requests' ? '#6199f6' : '#8c83b5'} stopOpacity=".2"/><stop offset="100%" stopColor={series === 'requests' ? '#6199f6' : '#8c83b5'} stopOpacity="0"/></linearGradient></defs>
       {[12, 42, 72, 102, 132].map(y => <line key={y} x1="0" x2="784" y1={y} y2={y} className="chart-grid" />)}
       <polygon points={`0,140 ${points} 784,140`} fill="url(#chartFill)" />
-      <polyline points={points} fill="none" stroke={series === 'requests' ? '#18a77b' : '#e89a25'} strokeWidth="2.3" vectorEffect="non-scaling-stroke" strokeLinejoin="round" strokeLinecap="round" />
+      <polyline points={points} fill="none" stroke={series === 'requests' ? '#6199f6' : '#8c83b5'} strokeWidth="2.3" vectorEffect="non-scaling-stroke" strokeLinejoin="round" strokeLinecap="round" />
       <line x1="644" x2="644" y1="0" y2="140" className="chart-guide" />
-      <circle cx="644" cy="13" r="4" fill="white" stroke={series === 'requests' ? '#18a77b' : '#e89a25'} strokeWidth="2.5" />
+      <circle cx="644" cy="13" r="4" fill="#0d0d17" stroke={series === 'requests' ? '#6199f6' : '#8c83b5'} strokeWidth="2.5" />
     </svg><div className="chart-x-labels"><span>12 AM</span><span>4 AM</span><span>8 AM</span><span>12 PM</span><span>4 PM</span><span>8 PM</span><span>Now</span></div></div>
     <div className="chart-bottom-note"><span className="chart-note-icon"><Clock3 size={13} /></span>Peak traffic at <strong>11:42 AM</strong><span className="note-separator">·</span><span>18.4k requests / min</span><button>View analytics <ArrowRight size={13} /></button></div>
   </section>

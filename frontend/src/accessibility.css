@@ -1,6 +1,6 @@
 /* Keep focus visible for keyboard users, including controls with custom surfaces. */
 :focus-visible {
-  outline: 3px solid rgba(42, 160, 125, .32);
+  outline: 2px solid rgba(97, 153, 246, .72);
   outline-offset: 2px;
 }
 
