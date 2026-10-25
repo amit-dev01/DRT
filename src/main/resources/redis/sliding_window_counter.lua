@@ -9,3 +9,14 @@ local elapsed = now - bucket * windowMs
 local storedBucket = tonumber(redis.call('HGET', KEYS[1], 'bucket'))
 local currentCount = tonumber(redis.call('HGET', KEYS[1], 'current')) or 0
 local previousCount = tonumber(redis.call('HGET', KEYS[1], 'previous')) or 0
+if not storedBucket or storedBucket ~= bucket then
+  if storedBucket and storedBucket == bucket - 1 then
+    previousCount = currentCount
+  else
+    previousCount = 0
+  end
+  currentCount = 0
+end
+local estimate = currentCount + previousCount * ((windowMs - elapsed) / windowMs)
+local allowed = 0
+local retryMs = 0
