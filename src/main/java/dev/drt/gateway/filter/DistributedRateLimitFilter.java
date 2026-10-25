@@ -54,3 +54,13 @@ public class DistributedRateLimitFilter implements GlobalFilter, Ordered {
     private Mono<List<Identity>> identities(ServerWebExchange exchange) {
         String explicitUser = exchange.getRequest().getHeaders().getFirst("X-User-Id");
         String apiKey = exchange.getRequest().getHeaders().getFirst("X-API-Key");
+        InetSocketAddress remote = exchange.getRequest().getRemoteAddress();
+        String ip = remote == null || remote.getAddress() == null ? null : remote.getAddress().getHostAddress();
+        return exchange.getPrincipal()
+                .map(Principal::getName)
+                .defaultIfEmpty("")
+                .map(principalName -> {
+                    List<Identity> identities = new ArrayList<>(3);
+                    Policy userPolicy = properties.getUser();
+                    String user = nonBlank(principalName) ? principalName : explicitUser;
+                    if (userPolicy.isEnabled() && nonBlank(user)) identities.add(new Identity("user", user, userPolicy));
