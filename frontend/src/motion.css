@@ -86,3 +86,14 @@
 .toast { animation: toast-arrive .36s var(--ease-spring) both; }
 .policy-modal { transform-origin: 50% 30%; animation: modal-arrive .35s var(--ease-cinema) both; }
 
+.traffic-chart polyline { stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: chart-trace 1.8s var(--ease-cinema) .3s both; }
+.traffic-chart polygon { opacity: 0; animation: chart-fill-in .8s ease .65s both; }
+.chart-guide { animation: guide-breathe 3.8s ease-in-out .8s infinite; }
+
+@keyframes orbital-node {
+  from { transform: rotate(0deg) translateX(var(--orbit-radius)); }
+  to { transform: rotate(360deg) translateX(var(--orbit-radius)); }
+}
+@keyframes chart-trace { to { stroke-dashoffset: 0; } }
+@keyframes chart-fill-in { to { opacity: 1; } }
+@keyframes guide-breathe { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
