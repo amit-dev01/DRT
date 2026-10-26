@@ -29,6 +29,15 @@ describe('rate-limit dashboard preview', () => {
     expect(screen.getByRole('button', { name: /Rate limits.*6/ })).toBeTruthy()
   })
 
+  it('renders the 3D gateway hero and wires its primary action to request simulation', () => {
+    render(<App />)
+
+    expect(screen.getByRole('heading', { name: /Global limits.*Atomic decisions/ })).toBeTruthy()
+    expect(screen.getByAltText(/3D gateway appliance/)).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Run a test request' }))
+    expect(screen.getByText('Test request allowed · HTTP 200')).toBeTruthy()
+  })
+
   it('simulates an over-limit response after a short request burst', () => {
     render(<App />)
     const testButton = screen.getByRole('button', { name: /Test request/ })
