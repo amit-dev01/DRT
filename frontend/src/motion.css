@@ -8,3 +8,21 @@
 .product-hero h1 { animation: copy-arrive .82s var(--ease-cinema) .07s both; }
 .product-subheadline { animation: copy-arrive .76s var(--ease-cinema) .15s both; }
 .product-hero-actions { animation: copy-arrive .76s var(--ease-cinema) .22s both; }
+.hero-visual { --orbit-radius: clamp(120px, 29vw, 320px); perspective: 1250px; transform-style: preserve-3d; isolation: isolate; }
+.hero-visual::before {
+  position: absolute;
+  z-index: 0;
+  top: 48%;
+  left: 50%;
+  width: 76%;
+  height: 31%;
+  content: "";
+  pointer-events: none;
+  border: 1px solid rgba(0, 102, 204, .14);
+  border-right-color: rgba(134, 134, 139, .16);
+  border-bottom-color: rgba(134, 134, 139, .08);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) perspective(800px) rotateX(67deg) rotateZ(-9deg);
+  transform-style: preserve-3d;
+  animation: orbit-breathe 8s ease-in-out infinite;
+}
