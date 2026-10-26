@@ -26,3 +26,18 @@
   transform-style: preserve-3d;
   animation: orbit-breathe 8s ease-in-out infinite;
 }
+.hero-visual::after {
+  position: absolute;
+  z-index: 2;
+  top: 47%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  content: "";
+  pointer-events: none;
+  background: var(--pricing-blue);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px rgba(0, 102, 204, .09);
+  animation: beacon-pulse 2.8s ease-out infinite;
+}
