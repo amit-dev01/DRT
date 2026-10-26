@@ -143,3 +143,28 @@
   .hero-orbit--two::before { width: 96%; }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .product-hero > .eyebrow,
+  .product-hero h1,
+  .product-subheadline,
+  .product-hero-actions,
+  .hero-visual::before,
+  .hero-visual::after,
+  .hero-orbit i,
+  .hero-visual > img,
+  .hero-callout,
+  .hero-image-caption,
+  .hero-feature-rail,
+  .traffic-chart polyline,
+  .traffic-chart polygon,
+  .chart-guide,
+  .overview-section-head,
+  .metric-card,
+  .panel,
+  .toast,
+  .policy-modal {
+    animation: none !important;
+    transition-duration: .01ms !important;
+  }
+  .hero-visual > img { transform: none !important; translate: 0 0 !important; }
+}
