@@ -61,3 +61,27 @@
   .hero-feature-rail { margin-right: 14px; margin-left: 14px; }
   .overview-section-head { margin-top: 46px; }
 }
+@media (max-width: 700px) {
+  .product-hero { padding-top: 24px; }
+  .product-hero > .eyebrow { font-size: 7px; }
+  .product-hero h1 { margin-top: 12px; font-size: clamp(40px, 12vw, 58px); letter-spacing: -.06em; }
+  .product-subheadline { max-width: 390px; padding: 0 8px; font-size: 13px; }
+  .product-hero-actions { gap: 14px; margin-top: 16px; }
+  .product-hero-actions .primary-button { height: 35px; padding: 0 13px; font-size: 10px; }
+  .hero-secondary { font-size: 10px; }
+  .hero-visual { width: calc(100% + 24px); margin: 0 -12px; }
+  .hero-image-caption { bottom: 7%; left: 6%; gap: 5px; font-size: 5px; }
+  .hero-callout { right: 4%; bottom: 4%; min-width: 0; gap: 7px; padding: 8px 10px; border-radius: 18px; }
+  .hero-callout-icon { width: 27px; height: 27px; }
+  .hero-callout-copy strong { font-size: 8px; }
+  .hero-callout-copy small { font-size: 6px; }
+  .hero-callout-value { font-size: 13px; }
+  .hero-callout-value small { font-size: 7px; }
+  .hero-feature-rail { grid-template-columns: 1fr; gap: 15px; margin: -6px 5px 0; padding-top: 19px; }
+  .hero-feature-rail > div { grid-template-columns: 24px 1fr; }
+  .hero-feature-rail p { margin-top: 3px; }
+  .overview-section-head { align-items: flex-start; margin: 38px 0 16px; padding-top: 24px; }
+  .overview-section-head h2 { font-size: 30px; }
+  .overview-section-head p { max-width: 280px; font-size: 10px; line-height: 1.5; }
+  .overview-section-head .heading-updated { max-width: 92px; flex-wrap: wrap; justify-content: flex-end; font-size: 0; }
+}
