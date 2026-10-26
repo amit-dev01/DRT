@@ -36,3 +36,10 @@
 .hero-image-caption { position: absolute; bottom: 8.5%; left: 8%; display: flex; align-items: center; gap: 9px; color: var(--slate); font-family: "SF Mono", ui-monospace, monospace; font-size: 7px; letter-spacing: .09em; }
 .hero-image-caption span { width: 6px; height: 6px; background: var(--pricing-blue); border-radius: 50%; }
 .hero-image-caption i { width: 3px; height: 3px; background: var(--steel); border-radius: 50%; }
+.hero-callout { position: absolute; right: 5%; bottom: 8%; display: flex; min-width: 280px; align-items: center; gap: 10px; padding: 12px 15px; text-align: left; background: rgba(255, 255, 255, .96); border: 1px solid var(--control); border-radius: 24px; }
+.hero-callout-icon { display: grid; width: 32px; height: 32px; flex: none; place-items: center; color: var(--blue); background: var(--mist); border-radius: 50%; }
+.hero-callout-copy { display: flex; flex: 1; flex-direction: column; gap: 3px; }
+.hero-callout-copy strong { color: var(--ink); font-size: 10px; font-weight: 600; }
+.hero-callout-copy small { color: var(--slate); font-size: 8px; }
+.hero-callout-value { color: var(--ink); font-size: 17px; font-weight: 600; letter-spacing: -.04em; white-space: nowrap; }
+.hero-callout-value small { color: var(--slate); font-size: 9px; font-weight: 400; }
