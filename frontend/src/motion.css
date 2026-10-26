@@ -1,0 +1,170 @@
+/* Restrained, layered motion: the dashboard should feel precise, never restless. */
+:root {
+  --ease-cinema: cubic-bezier(.2, .72, .18, 1);
+  --ease-spring: cubic-bezier(.2, .82, .25, 1.18);
+}
+
+.product-hero > .eyebrow { animation: copy-arrive .72s var(--ease-cinema) both; }
+.product-hero h1 { animation: copy-arrive .82s var(--ease-cinema) .07s both; }
+.product-subheadline { animation: copy-arrive .76s var(--ease-cinema) .15s both; }
+.product-hero-actions { animation: copy-arrive .76s var(--ease-cinema) .22s both; }
+.hero-visual { --orbit-radius: clamp(120px, 29vw, 320px); perspective: 1250px; transform-style: preserve-3d; isolation: isolate; }
+.hero-visual::before {
+  position: absolute;
+  z-index: 0;
+  top: 48%;
+  left: 50%;
+  width: 76%;
+  height: 31%;
+  content: "";
+  pointer-events: none;
+  border: 1px solid rgba(0, 102, 204, .14);
+  border-right-color: rgba(134, 134, 139, .16);
+  border-bottom-color: rgba(134, 134, 139, .08);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) perspective(800px) rotateX(67deg) rotateZ(-9deg);
+  transform-style: preserve-3d;
+  animation: orbit-breathe 8s ease-in-out infinite;
+}
+.hero-visual::after {
+  position: absolute;
+  z-index: 2;
+  top: 47%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  content: "";
+  pointer-events: none;
+  background: var(--pricing-blue);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px rgba(0, 102, 204, .09);
+  animation: beacon-pulse 2.8s ease-out infinite;
+}
+.hero-orbit { position: absolute; z-index: 1; inset: 0; pointer-events: none; transform-style: preserve-3d; }
+.hero-orbit::before { position: absolute; top: 48%; left: 50%; width: 79%; height: 29%; content: ""; border: 1px solid rgba(0, 102, 204, .12); border-right-color: rgba(134, 134, 139, .18); border-radius: 50%; transform: translate(-50%, -50%) perspective(900px) rotateX(66deg) rotateZ(-12deg); }
+.hero-orbit--two::before { width: 91%; height: 40%; border-color: rgba(134, 134, 139, .12); border-left-color: rgba(0, 102, 204, .16); transform: translate(-50%, -50%) perspective(900px) rotateX(72deg) rotateZ(21deg); }
+.hero-orbit i { position: absolute; top: 48%; left: 50%; width: 6px; height: 6px; background: var(--pricing-blue); border: 1px solid #fff; border-radius: 50%; box-shadow: 0 0 0 4px rgba(0, 102, 204, .09); transform-origin: 0 0; animation: orbital-node 12s linear infinite; }
+.hero-orbit--two i { width: 5px; height: 5px; background: var(--steel); animation-duration: 17s; animation-direction: reverse; }
+.hero-visual > img {
+  position: relative;
+  z-index: 1;
+  transform: perspective(1250px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg));
+  transform-style: preserve-3d;
+  transform-origin: 50% 58%;
+  transition: transform .42s var(--ease-cinema), filter .4s ease;
+  animation: image-arrive .95s var(--ease-cinema) .18s both, image-hover 8s ease-in-out 1.2s infinite;
+  will-change: transform, translate;
+}
+.hero-visual:hover > img { filter: saturate(1.04) contrast(1.015); }
+.hero-callout { z-index: 3; animation: callout-arrive .78s var(--ease-spring) .82s both, callout-drift 6.2s ease-in-out 1.8s infinite; transition: border-color .25s ease, translate .25s ease; }
+.hero-callout:hover { border-color: rgba(0, 102, 204, .38); translate: 0 -3px; }
+.hero-image-caption { z-index: 3; animation: copy-arrive .65s var(--ease-cinema) .75s both; }
+.hero-feature-rail { animation: copy-arrive .8s var(--ease-cinema) .42s both; }
+.hero-feature-rail > div { transition: translate .24s ease; }
+.hero-feature-rail > div:hover { translate: 0 -3px; }
+.hero-feature-rail > div > span { transition: color .2s ease, translate .2s ease; }
+.hero-feature-rail > div:hover > span { color: var(--pricing-blue); translate: 2px 0; }
+.overview-section-head { animation: copy-arrive .72s var(--ease-cinema) .08s both; }
+.metric-card { animation: surface-arrive .68s var(--ease-cinema) both; transform: perspective(900px) rotateX(0) translateZ(0); transform-style: preserve-3d; transition: background .25s ease, translate .25s var(--ease-cinema), transform .25s var(--ease-cinema); }
+.metric-card:nth-child(1) { animation-delay: .03s; }
+.metric-card:nth-child(2) { animation-delay: .09s; }
+.metric-card:nth-child(3) { animation-delay: .15s; }
+.metric-card:nth-child(4) { animation-delay: .21s; }
+.metric-card:hover { background: #f0f0f3; translate: 0 -4px; transform: perspective(900px) rotateX(1.2deg) translateZ(5px); }
+.panel { animation: surface-arrive .62s var(--ease-cinema) both; }
+.side-stack .panel:nth-child(2) { animation-delay: .08s; }
+.policy-panel { animation-delay: .16s; }
+.rules-table tbody tr { transition: background .18s ease; }
+.rules-table tbody tr:hover { background: rgba(0, 102, 204, .035); }
+.node-card { transform: perspective(700px) rotateX(0) translateZ(0); transform-style: preserve-3d; transition: transform .3s var(--ease-cinema), background .25s ease; }
+.node-card:hover { background: #fbfbfd; transform: perspective(700px) rotateX(1deg) translateY(-3px) translateZ(5px); }
+.primary-button, .topbar-test, .secondary-button, .hero-secondary, .icon-button { transition: transform .2s var(--ease-cinema), color .18s ease, background .18s ease, border-color .18s ease; }
+.primary-button:hover, .topbar-test:hover { transform: translateY(-1px) scale(1.015); }
+.primary-button:active, .topbar-test:active { transform: translateY(0) scale(.975); }
+.secondary-button:active, .hero-secondary:active { transform: scale(.975); }
+.toast { animation: toast-arrive .36s var(--ease-spring) both; }
+.policy-modal { transform-origin: 50% 30%; animation: modal-arrive .35s var(--ease-cinema) both; }
+
+.traffic-chart polyline { stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: chart-trace 1.8s var(--ease-cinema) .3s both; }
+.traffic-chart polygon { opacity: 0; animation: chart-fill-in .8s ease .65s both; }
+.chart-guide { animation: guide-breathe 3.8s ease-in-out .8s infinite; }
+
+@keyframes orbital-node {
+  from { transform: rotate(0deg) translateX(var(--orbit-radius)); }
+  to { transform: rotate(360deg) translateX(var(--orbit-radius)); }
+}
+@keyframes chart-trace { to { stroke-dashoffset: 0; } }
+@keyframes chart-fill-in { to { opacity: 1; } }
+@keyframes guide-breathe { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+@keyframes copy-arrive {
+  from { opacity: 0; translate: 0 14px; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes surface-arrive {
+  from { opacity: 0; translate: 0 16px; scale: .99; }
+  to { opacity: 1; translate: 0 0; scale: 1; }
+}
+@keyframes image-arrive {
+  from { opacity: 0; scale: .94; }
+  to { opacity: 1; scale: 1; }
+}
+@keyframes image-hover {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -9px; }
+}
+@keyframes callout-arrive {
+  from { opacity: 0; scale: .92; }
+  to { opacity: 1; scale: 1; }
+}
+@keyframes callout-drift {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -5px; }
+}
+@keyframes orbit-breathe {
+  0%, 100% { opacity: .55; scale: .985; }
+  50% { opacity: .95; scale: 1.015; }
+}
+@keyframes beacon-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 102, 204, .22); }
+  75%, 100% { box-shadow: 0 0 0 11px rgba(0, 102, 204, 0); }
+}
+@keyframes toast-arrive {
+  from { opacity: 0; translate: 0 10px; scale: .97; }
+  to { opacity: 1; translate: 0 0; scale: 1; }
+}
+@keyframes modal-arrive {
+  from { opacity: 0; transform: perspective(800px) rotateX(-5deg) translateY(10px); }
+  to { opacity: 1; transform: perspective(800px) rotateX(0) translateY(0); }
+}
+
+@media (max-width: 700px) {
+  .hero-visual { --orbit-radius: clamp(92px, 34vw, 164px); }
+  .hero-orbit--two::before { width: 96%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-hero > .eyebrow,
+  .product-hero h1,
+  .product-subheadline,
+  .product-hero-actions,
+  .hero-visual::before,
+  .hero-visual::after,
+  .hero-orbit i,
+  .hero-visual > img,
+  .hero-callout,
+  .hero-image-caption,
+  .hero-feature-rail,
+  .traffic-chart polyline,
+  .traffic-chart polygon,
+  .chart-guide,
+  .overview-section-head,
+  .metric-card,
+  .panel,
+  .toast,
+  .policy-modal {
+    animation: none !important;
+    transition-duration: .01ms !important;
+  }
+  .hero-visual > img { transform: none !important; translate: 0 0 !important; }
+}
