@@ -1,0 +1,21 @@
+/* Product-stage composition for the DRT overview. */
+.product-hero {
+  padding: 39px 0 0;
+  overflow: visible;
+  text-align: center;
+  background: var(--gallery);
+}
+.product-hero > .eyebrow {
+  color: var(--blue);
+  font-size: 9px;
+  letter-spacing: .13em;
+}
+.product-hero h1 {
+  margin: 14px auto 11px;
+  color: var(--ink);
+  font-size: clamp(48px, 6.4vw, 76px);
+  font-weight: 600;
+  letter-spacing: -.055em;
+  line-height: 1.02;
+}
+.product-hero h1 span { color: #4b4b4f; }
