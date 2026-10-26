@@ -137,3 +137,9 @@
   from { opacity: 0; transform: perspective(800px) rotateX(-5deg) translateY(10px); }
   to { opacity: 1; transform: perspective(800px) rotateX(0) translateY(0); }
 }
+
+@media (max-width: 700px) {
+  .hero-visual { --orbit-radius: clamp(92px, 34vw, 164px); }
+  .hero-orbit--two::before { width: 96%; }
+}
+
