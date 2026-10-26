@@ -1,0 +1,5 @@
+/* Restrained, layered motion: the dashboard should feel precise, never restless. */
+:root {
+  --ease-cinema: cubic-bezier(.2, .72, .18, 1);
+  --ease-spring: cubic-bezier(.2, .82, .25, 1.18);
+}
