@@ -72,3 +72,17 @@
 .metric-card:nth-child(3) { animation-delay: .15s; }
 .metric-card:nth-child(4) { animation-delay: .21s; }
 .metric-card:hover { background: #f0f0f3; translate: 0 -4px; transform: perspective(900px) rotateX(1.2deg) translateZ(5px); }
+.panel { animation: surface-arrive .62s var(--ease-cinema) both; }
+.side-stack .panel:nth-child(2) { animation-delay: .08s; }
+.policy-panel { animation-delay: .16s; }
+.rules-table tbody tr { transition: background .18s ease; }
+.rules-table tbody tr:hover { background: rgba(0, 102, 204, .035); }
+.node-card { transform: perspective(700px) rotateX(0) translateZ(0); transform-style: preserve-3d; transition: transform .3s var(--ease-cinema), background .25s ease; }
+.node-card:hover { background: #fbfbfd; transform: perspective(700px) rotateX(1deg) translateY(-3px) translateZ(5px); }
+.primary-button, .topbar-test, .secondary-button, .hero-secondary, .icon-button { transition: transform .2s var(--ease-cinema), color .18s ease, background .18s ease, border-color .18s ease; }
+.primary-button:hover, .topbar-test:hover { transform: translateY(-1px) scale(1.015); }
+.primary-button:active, .topbar-test:active { transform: translateY(0) scale(.975); }
+.secondary-button:active, .hero-secondary:active { transform: scale(.975); }
+.toast { animation: toast-arrive .36s var(--ease-spring) both; }
+.policy-modal { transform-origin: 50% 30%; animation: modal-arrive .35s var(--ease-cinema) both; }
+
