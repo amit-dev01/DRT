@@ -19,3 +19,20 @@
   line-height: 1.02;
 }
 .product-hero h1 span { color: #4b4b4f; }
+.product-subheadline {
+  max-width: 555px;
+  margin: 0 auto;
+  color: var(--slate);
+  font-size: 16px;
+  letter-spacing: -.015em;
+  line-height: 1.45;
+}
+.product-hero-actions { display: flex; align-items: center; justify-content: center; gap: 21px; margin-top: 21px; }
+.product-hero-actions .primary-button { height: 38px; padding: 0 18px; font-size: 12px; }
+.hero-secondary { display: inline-flex; align-items: center; gap: 7px; padding: 7px 0; color: var(--blue); font-size: 12px; background: transparent; border: 0; }
+.hero-secondary:hover { text-decoration: underline; }
+.hero-visual { position: relative; width: min(100%, 1040px); margin: 0 auto; }
+.hero-visual > img { display: block; width: 100%; height: auto; mix-blend-mode: multiply; }
+.hero-image-caption { position: absolute; bottom: 8.5%; left: 8%; display: flex; align-items: center; gap: 9px; color: var(--slate); font-family: "SF Mono", ui-monospace, monospace; font-size: 7px; letter-spacing: .09em; }
+.hero-image-caption span { width: 6px; height: 6px; background: var(--pricing-blue); border-radius: 50%; }
+.hero-image-caption i { width: 3px; height: 3px; background: var(--steel); border-radius: 50%; }
