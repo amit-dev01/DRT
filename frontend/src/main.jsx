@@ -9,6 +9,8 @@ import {
 } from 'lucide-react'
 import './style.css'
 import './accessibility.css'
+import './hero.css'
+import './motion.css'
 
 const initialRules = [
   { id: 'RL-001', name: 'Public API · Standard', scope: 'All routes', algorithm: 'Token bucket', limit: '120 req / min', burst: '20', dimensions: ['IP', 'API key'], status: 'Active', color: 'mint' },
@@ -109,12 +111,12 @@ function TrafficChart({ range, setRange }) {
     </div>
     <div className="chart-summary"><strong>{series === 'requests' ? '18,429' : '142'}</strong><span>req / min</span><span className="chart-summary-change"><ArrowUpRight size={13} /> 12.8%</span><span className="chart-summary-note">vs. previous period</span></div>
     <div className="chart-wrap"><div className="chart-y-labels"><span>20k</span><span>15k</span><span>10k</span><span>5k</span><span>0</span></div><svg className="traffic-chart" viewBox="0 0 784 140" preserveAspectRatio="none" role="img" aria-label={`${series} over the last 24 hours`}>
-      <defs><linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stopColor={series === 'requests' ? '#6199f6' : '#8c83b5'} stopOpacity=".2"/><stop offset="100%" stopColor={series === 'requests' ? '#6199f6' : '#8c83b5'} stopOpacity="0"/></linearGradient></defs>
+      <defs><linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stopColor={series === 'requests' ? '#0066cc' : '#86868b'} stopOpacity=".2"/><stop offset="100%" stopColor={series === 'requests' ? '#0066cc' : '#86868b'} stopOpacity="0"/></linearGradient></defs>
       {[12, 42, 72, 102, 132].map(y => <line key={y} x1="0" x2="784" y1={y} y2={y} className="chart-grid" />)}
       <polygon points={`0,140 ${points} 784,140`} fill="url(#chartFill)" />
-      <polyline points={points} fill="none" stroke={series === 'requests' ? '#6199f6' : '#8c83b5'} strokeWidth="2.3" vectorEffect="non-scaling-stroke" strokeLinejoin="round" strokeLinecap="round" />
+      <polyline points={points} fill="none" stroke={series === 'requests' ? '#0066cc' : '#86868b'} strokeWidth="2.3" vectorEffect="non-scaling-stroke" strokeLinejoin="round" strokeLinecap="round" />
       <line x1="644" x2="644" y1="0" y2="140" className="chart-guide" />
-      <circle cx="644" cy="13" r="4" fill="#0d0d17" stroke={series === 'requests' ? '#6199f6' : '#8c83b5'} strokeWidth="2.5" />
+      <circle cx="644" cy="13" r="4" fill="#ffffff" stroke={series === 'requests' ? '#0066cc' : '#86868b'} strokeWidth="2.5" />
     </svg><div className="chart-x-labels"><span>12 AM</span><span>4 AM</span><span>8 AM</span><span>12 PM</span><span>4 PM</span><span>8 PM</span><span>Now</span></div></div>
     <div className="chart-bottom-note"><span className="chart-note-icon"><Clock3 size={13} /></span>Peak traffic at <strong>11:42 AM</strong><span className="note-separator">·</span><span>18.4k requests / min</span><button>View analytics <ArrowRight size={13} /></button></div>
   </section>
@@ -133,10 +135,47 @@ function RuleTable({ rules, onEdit, onToggle, compact = false }) {
   </tbody></table>{rules.length === 0 && <div className="empty-state">No policies match your search.</div>}</div>
 }
 
-function Overview({ rules, onEdit, onToggle, range, setRange, onViewAll }) {
+function Overview({ rules, onEdit, onToggle, range, setRange, onViewAll, onTest }) {
   const activeRules = rules.filter(r => r.status === 'Active').length
   return <>
-    <Heading title="Overview" subtitle="A real-time view of your API traffic and rate limit policies." right={<div className="heading-updated"><span className="status-dot" />Sample metrics <span>·</span> Interactive preview</div>} />
+    <section className="product-hero" aria-labelledby="product-hero-title">
+      <div className="eyebrow">DRT GATEWAY&nbsp; / &nbsp;DISTRIBUTED RATE LIMITING</div>
+      <h1 id="product-hero-title">Global limits.<br /><span>Atomic decisions.</span></h1>
+      <p className="product-subheadline">Protect every request with shared Redis state, precise algorithms, and enforcement that stays consistent across every gateway instance.</p>
+      <div className="product-hero-actions">
+        <button className="primary-button" onClick={onTest}><Play size={14} fill="currentColor" />Run a test request</button>
+        <button className="hero-secondary" onClick={() => onViewAll('Rate limits')}>Explore rate limits <ArrowRight size={14} /></button>
+      </div>
+      <div className="hero-visual"
+        onPointerMove={event => {
+          if (event.pointerType !== 'mouse') return
+          const bounds = event.currentTarget.getBoundingClientRect()
+          const x = (event.clientX - bounds.left) / bounds.width - .5
+          const y = (event.clientY - bounds.top) / bounds.height - .5
+          event.currentTarget.style.setProperty('--tilt-x', `${x * 5}deg`)
+          event.currentTarget.style.setProperty('--tilt-y', `${y * -3.5}deg`)
+        }}
+        onPointerLeave={event => {
+          event.currentTarget.style.setProperty('--tilt-x', '0deg')
+          event.currentTarget.style.setProperty('--tilt-y', '0deg')
+        }}>
+        <div className="hero-orbit hero-orbit--one" aria-hidden="true"><i /></div>
+        <div className="hero-orbit hero-orbit--two" aria-hidden="true"><i /></div>
+        <img src="/images/drt-gateway-3d.png" alt="A 3D gateway appliance connecting distributed services through one blue-lit control point" />
+        <div className="hero-image-caption"><span /> SHARED REDIS STATE <i /> ATOMIC LUA ENFORCEMENT</div>
+        <div className="hero-callout">
+          <span className="hero-callout-icon"><Database size={17} /></span>
+          <span className="hero-callout-copy"><strong>Redis decision time</strong><small>Shared across all gateway instances</small></span>
+          <span className="hero-callout-value">2.4<small> ms</small></span>
+        </div>
+      </div>
+      <div className="hero-feature-rail">
+        <div><span>01</span><strong>Atomic by design</strong><p>Each quota decision runs in one Redis Lua script.</p></div>
+        <div><span>02</span><strong>One shared clock</strong><p>Redis time keeps instances aligned under load.</p></div>
+        <div><span>03</span><strong>Three algorithms</strong><p>Choose token bucket or either sliding window.</p></div>
+      </div>
+    </section>
+    <div className="overview-section-head" id="control-overview"><div><div className="eyebrow">CONTROL PLANE</div><h2>Overview</h2><p>A real-time view of your API traffic and rate limit policies.</p></div><div className="heading-updated"><span className="status-dot" />Sample metrics <span>·</span> Interactive preview</div></div>
     <div className="metrics-grid">
       <MetricCard label="Requests today" value="2.84M" delta="12.8%" positive icon={Activity} accent="mint" footnote="compared to yesterday" />
       <MetricCard label="Allowed requests" value="99.92%" delta="0.4%" positive icon={ShieldCheck} accent="blue" footnote="of total traffic" />
@@ -249,7 +288,7 @@ export function App() {
     <Sidebar page={page} setPage={viewPage} mobileOpen={mobileOpen} closeMobile={() => setMobileOpen(false)} policyCount={rules.length} />
     <div className="app-main"><Topbar onMenu={() => setMobileOpen(true)} onTest={runTest} page={page} />
       <main className="content">
-        {page === 'Overview' && <Overview rules={rules} onEdit={setModalRule} onToggle={toggleRule} range={range} setRange={setRange} onViewAll={viewPage} />}
+        {page === 'Overview' && <Overview rules={rules} onEdit={setModalRule} onToggle={toggleRule} range={range} setRange={setRange} onViewAll={viewPage} onTest={runTest} />}
         {page === 'Rate limits' && <PoliciesPage rules={rules} onEdit={setModalRule} onToggle={toggleRule} />}
         {page === 'Live traffic' && <ActivityPage events={events} onTest={runTest} />}
         {page === 'Redis health' && <RedisPage />}
