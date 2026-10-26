@@ -46,3 +46,14 @@
 .hero-orbit--two::before { width: 91%; height: 40%; border-color: rgba(134, 134, 139, .12); border-left-color: rgba(0, 102, 204, .16); transform: translate(-50%, -50%) perspective(900px) rotateX(72deg) rotateZ(21deg); }
 .hero-orbit i { position: absolute; top: 48%; left: 50%; width: 6px; height: 6px; background: var(--pricing-blue); border: 1px solid #fff; border-radius: 50%; box-shadow: 0 0 0 4px rgba(0, 102, 204, .09); transform-origin: 0 0; animation: orbital-node 12s linear infinite; }
 .hero-orbit--two i { width: 5px; height: 5px; background: var(--steel); animation-duration: 17s; animation-direction: reverse; }
+.hero-visual > img {
+  position: relative;
+  z-index: 1;
+  transform: perspective(1250px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg));
+  transform-style: preserve-3d;
+  transform-origin: 50% 58%;
+  transition: transform .42s var(--ease-cinema), filter .4s ease;
+  animation: image-arrive .95s var(--ease-cinema) .18s both, image-hover 8s ease-in-out 1.2s infinite;
+  will-change: transform, translate;
+}
+.hero-visual:hover > img { filter: saturate(1.04) contrast(1.015); }
