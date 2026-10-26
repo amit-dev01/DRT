@@ -3,3 +3,8 @@
   --ease-cinema: cubic-bezier(.2, .72, .18, 1);
   --ease-spring: cubic-bezier(.2, .82, .25, 1.18);
 }
+
+.product-hero > .eyebrow { animation: copy-arrive .72s var(--ease-cinema) both; }
+.product-hero h1 { animation: copy-arrive .82s var(--ease-cinema) .07s both; }
+.product-subheadline { animation: copy-arrive .76s var(--ease-cinema) .15s both; }
+.product-hero-actions { animation: copy-arrive .76s var(--ease-cinema) .22s both; }
