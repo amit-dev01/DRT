@@ -57,3 +57,11 @@
   will-change: transform, translate;
 }
 .hero-visual:hover > img { filter: saturate(1.04) contrast(1.015); }
+.hero-callout { z-index: 3; animation: callout-arrive .78s var(--ease-spring) .82s both, callout-drift 6.2s ease-in-out 1.8s infinite; transition: border-color .25s ease, translate .25s ease; }
+.hero-callout:hover { border-color: rgba(0, 102, 204, .38); translate: 0 -3px; }
+.hero-image-caption { z-index: 3; animation: copy-arrive .65s var(--ease-cinema) .75s both; }
+.hero-feature-rail { animation: copy-arrive .8s var(--ease-cinema) .42s both; }
+.hero-feature-rail > div { transition: translate .24s ease; }
+.hero-feature-rail > div:hover { translate: 0 -3px; }
+.hero-feature-rail > div > span { transition: color .2s ease, translate .2s ease; }
+.hero-feature-rail > div:hover > span { color: var(--pricing-blue); translate: 2px 0; }
